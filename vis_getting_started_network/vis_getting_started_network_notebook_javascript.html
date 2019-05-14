@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>vis_getting_started_network_notebook</title>
+<title>vis_getting_started_network_notebook_javascript</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13116,7 +13116,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="vis_getting_started_network">vis_getting_started_network<a class="anchor-link" href="#vis_getting_started_network">&#182;</a></h1><p>The vis.js website provides a 'getting started' example for its Network tool:</p>
+<h1 id="vis_getting_started_network_javascript">vis_getting_started_network_javascript<a class="anchor-link" href="#vis_getting_started_network_javascript">&#182;</a></h1><p>The vis.js website provides a 'getting started' example for its Network tool:</p>
 <p><a href="http://visjs.org/docs/network/">http://visjs.org/docs/network/</a></p>
 <p>This notebook looks at recreating this in Jupyter notebooks.</p>
 
@@ -13126,24 +13126,57 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Embedding-html">Embedding html<a class="anchor-link" href="#Embedding-html">&#182;</a></h2><p>The getting started example is placed in a html file 'vis_getting_started_network.html'. Clicking on the file in windows explorer will display the page in a browser and show it working.</p>
-<p>The example from the vis.js network is modified here, so that the vis.py script and css is loaded from a local copy</p>
-<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;../vis-4.21.0/dist/vis.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;../vis-4.21.0/dist/dist/vis.css&quot;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span> <span class="p">/&gt;</span>
-</pre></div>
-<p>This external html page can be shown in the Jupyter notebook using an IFrame:</p>
+<h2 id="Importing-vis.js">Importing vis.js<a class="anchor-link" href="#Importing-vis.js">&#182;</a></h2><p>In other examples on the web, vis.js is imported into a Jupyter notebook using the require.config command.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">IFrame</span>
-<span class="n">IFrame</span><span class="p">(</span><span class="s1">&#39;vis_getting_started_network.html&#39;</span><span class="p">,</span><span class="mi">650</span><span class="p">,</span><span class="mi">450</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">Javascript</span>
+<span class="n">Javascript</span><span class="p">(</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">require.config({paths: {vis: &#39;../vis-4.21.0/dist/vis&#39;}});</span>
+
+<span class="sd">require([&#39;vis&#39;], function(vis){</span>
+<span class="sd">    </span>
+<span class="sd">    // create an array with nodes</span>
+<span class="sd">    var nodes = new vis.DataSet([</span>
+<span class="sd">        {id: 1, label: &#39;Node 1&#39;},</span>
+<span class="sd">        {id: 2, label: &#39;Node 2&#39;},</span>
+<span class="sd">        {id: 3, label: &#39;Node 3&#39;},</span>
+<span class="sd">        {id: 4, label: &#39;Node 4&#39;},</span>
+<span class="sd">        {id: 5, label: &#39;Node 5&#39;}</span>
+<span class="sd">    ]);</span>
+
+<span class="sd">    // create an array with edges</span>
+<span class="sd">    var edges = new vis.DataSet([</span>
+<span class="sd">        {from: 1, to: 3},</span>
+<span class="sd">        {from: 1, to: 2},</span>
+<span class="sd">        {from: 2, to: 4},</span>
+<span class="sd">        {from: 2, to: 5}</span>
+<span class="sd">    ]);</span>
+
+<span class="sd">    // create a network</span>
+<span class="sd">    var container = document.getElementById(&#39;mynetwork10&#39;);</span>
+
+<span class="sd">    // provide the data in the vis format</span>
+<span class="sd">    var data = {</span>
+<span class="sd">        nodes: nodes,</span>
+<span class="sd">        edges: edges</span>
+<span class="sd">    };</span>
+<span class="sd">    var options = {width: &#39;600px&#39;,</span>
+<span class="sd">                   height: &#39;400px&#39;};</span>
+
+<span class="sd">    // initialize your network!</span>
+<span class="sd">    var network = new vis.Network(container, data, options);</span>
+<span class="sd">});</span>
+<span class="sd">element.append(&quot;&lt;div id=&#39;mynetwork10&#39;&gt;&lt;/div&gt;&quot;)</span>
+<span class="sd">&quot;&quot;&quot;</span> 
+<span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13156,184 +13189,21 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[10]:</div>
+    <div class="prompt output_prompt">Out[13]:</div>
 
 
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-
-        <iframe
-            width="650"
-            height="450"
-            src="vis_getting_started_network.html"
-            frameborder="0"
-            allowfullscreen
-        ></iframe>
-        
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>However the above Javascript does not display on GitHub or on nbviewer.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="embedded-html">embedded html<a class="anchor-link" href="#embedded-html">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%html</span>
-<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;../vis-4.21.0/dist/vis.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;../vis-4.21.0/dist/dist/vis.css&quot;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span> <span class="p">/&gt;</span>
-
-    <span class="p">&lt;</span><span class="nt">style</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span>
-        <span class="p">#</span><span class="nn">mynetwork</span> <span class="p">{</span>
-            <span class="k">width</span><span class="p">:</span> <span class="mi">600</span><span class="kt">px</span><span class="p">;</span>
-            <span class="k">height</span><span class="p">:</span> <span class="mi">400</span><span class="kt">px</span><span class="p">;</span>
-            <span class="k">border</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="kc">solid</span> <span class="kc">lightgray</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;mynetwork&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-
-<span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
-    <span class="c1">// create an array with nodes</span>
-    <span class="kd">var</span> <span class="nx">nodes</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">vis</span><span class="p">.</span><span class="nx">DataSet</span><span class="p">([</span>
-        <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;Node 1&#39;</span><span class="p">},</span>
-        <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;Node 2&#39;</span><span class="p">},</span>
-        <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;Node 3&#39;</span><span class="p">},</span>
-        <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;Node 4&#39;</span><span class="p">},</span>
-        <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;Node 5&#39;</span><span class="p">}</span>
-    <span class="p">]);</span>
-
-    <span class="c1">// create an array with edges</span>
-    <span class="kd">var</span> <span class="nx">edges</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">vis</span><span class="p">.</span><span class="nx">DataSet</span><span class="p">([</span>
-        <span class="p">{</span><span class="nx">from</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">to</span><span class="o">:</span> <span class="mi">3</span><span class="p">},</span>
-        <span class="p">{</span><span class="nx">from</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">to</span><span class="o">:</span> <span class="mi">2</span><span class="p">},</span>
-        <span class="p">{</span><span class="nx">from</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">to</span><span class="o">:</span> <span class="mi">4</span><span class="p">},</span>
-        <span class="p">{</span><span class="nx">from</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">to</span><span class="o">:</span> <span class="mi">5</span><span class="p">}</span>
-    <span class="p">]);</span>
-
-    <span class="c1">// create a network</span>
-    <span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;mynetwork&#39;</span><span class="p">);</span>
-
-    <span class="c1">// provide the data in the vis format</span>
-    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="nx">nodes</span><span class="o">:</span> <span class="nx">nodes</span><span class="p">,</span>
-        <span class="nx">edges</span><span class="o">:</span> <span class="nx">edges</span>
-    <span class="p">};</span>
-    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{};</span>
-
-    <span class="c1">// initialize your network!</span>
-    <span class="kd">var</span> <span class="nx">network</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">vis</span><span class="p">.</span><span class="nx">Network</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
-<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
 
 
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<html>
-<head>
-    <script type="text/javascript" src="../vis-4.21.0/dist/vis.js"></script>
-    <link href="../vis-4.21.0/dist/dist/vis.css" rel="stylesheet" type="text/css" />
-
-    <style type="text/css">
-        #mynetwork {
-            width: 600px;
-            height: 400px;
-            border: 1px solid lightgray;
-        }
-    </style>
-</head>
-<body>
-<div id="mynetwork"></div>
-
+<div id="192b38f9-c7b6-450d-82c6-60579ae2bfb5"></div>
+<div class="output_subarea output_javascript output_execute_result">
 <script type="text/javascript">
+var element = $('#192b38f9-c7b6-450d-82c6-60579ae2bfb5');
+
+require.config({paths: {vis: '../vis-4.21.0/dist/vis'}});
+
+require(['vis'], function(vis){
+    
     // create an array with nodes
     var nodes = new vis.DataSet([
         {id: 1, label: 'Node 1'},
@@ -13352,21 +13222,22 @@ div#notebook {
     ]);
 
     // create a network
-    var container = document.getElementById('mynetwork');
+    var container = document.getElementById('mynetwork10');
 
     // provide the data in the vis format
     var data = {
         nodes: nodes,
         edges: edges
     };
-    var options = {};
+    var options = {width: '600px',
+                   height: '400px'};
 
     // initialize your network!
     var network = new vis.Network(container, data, options);
+});
+element.append("<div id='mynetwork10'></div>")
+
 </script>
-</body>
-</html>
-
 </div>
 
 </div>
@@ -13375,70 +13246,14 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Can't load this on GitHub at present, so don't know how it is rendering.</p>
+<p>However this does seem to render on nbviewer.</p>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
 </div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
 </div>
     </div>
   </div>
